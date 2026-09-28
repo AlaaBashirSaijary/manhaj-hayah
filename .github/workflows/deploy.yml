@@ -1,0 +1,92 @@
+name: Deploy site
+
+# Publishes the site to GitHub Pages together with the latest app APKs.
+# The APKs are built elsewhere; this job fetches the newest release and
+# re-publishes whenever there is a new version.
+#
+# One-time setup: Settings → Pages → Build and deployment → Source:
+# "GitHub Actions".
+#
+# If the repository the app is built in is private, add a secret named
+# SOURCE_TOKEN: a fine-grained token with read access to that
+# repository's contents.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  SOURCE_REPO: AlaaBashirSaijary/Quran
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ secrets.SOURCE_TOKEN || github.token }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Find the latest app version
+        id: ver
+        run: |
+          tag=$(gh release view --repo "$SOURCE_REPO" --json tagName -q .tagName)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "latest release: $tag"
+          # A scheduled run only publishes when there is something new.
+          if [ "$GITHUB_EVENT_NAME" = schedule ]; then
+            live=$(curl -fsS "https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}/download/latest.json" | python3 -c "import json,sys;print(json.load(sys.stdin)['version'])" || true)
+            echo "live: $live"
+            [ "$live" = "$tag" ] && echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Assemble the site
+        if: steps.ver.outputs.skip != 'true'
+        run: |
+          mkdir -p _site/download
+          cp -r index.html privacy.html icon.png screenshots _site/
+          cd _site/download
+          gh release download "${{ steps.ver.outputs.tag }}" --repo "$SOURCE_REPO" --pattern '*.apk'
+          # Releases made before the rename carry the former file names.
+          for f in tareeq-aljannah*.apk; do
+            [ -e "$f" ] && mv "$f" "manhaj-hayah${f#tareeq-aljannah}"
+          done
+          # The site hands each phone the build for its processor.
+          python3 - "${{ steps.ver.outputs.tag }}" <<'PY'
+          import json, os, sys
+          files = {}
+          for key, name in [('universal', 'manhaj-hayah.apk'),
+                            ('arm64-v8a', 'manhaj-hayah-arm64-v8a.apk'),
+                            ('armeabi-v7a', 'manhaj-hayah-armeabi-v7a.apk')]:
+              if os.path.exists(name):
+                  files[key] = {'file': name, 'size': os.path.getsize(name)}
+          info = {'version': sys.argv[1], 'size': files['universal']['size'], 'files': files}
+          json.dump(info, open('latest.json', 'w'))
+          print(info)
+          PY
+
+      - uses: actions/configure-pages@v5
+        if: steps.ver.outputs.skip != 'true'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.ver.outputs.skip != 'true'
+        with:
+          path: _site
+
+      - id: deployment
+        if: steps.ver.outputs.skip != 'true'
+        uses: actions/deploy-pages@v4
