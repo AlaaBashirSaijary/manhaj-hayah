@@ -1,0 +1,22 @@
+name: Reset download counter
+
+# Sets the download counter on the website back to zero (for example after
+# your own test downloads). Run it from the Actions tab.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - run: |
+          gh release delete counter --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
+          echo counter > download.txt
+          gh release create counter download.txt --repo "$GITHUB_REPOSITORY" \
+            --title "Download counter" \
+            --notes "Counts app downloads from the website. Do not delete: the number on the site is this file's download count."

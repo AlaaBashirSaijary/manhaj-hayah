@@ -102,6 +102,7 @@
   .dl-info, .dl-eta { color: var(--ink-soft); font-size: 0.95rem; }
   .dl-cancel { background: none; border: 0; color: var(--gold-soft); font: inherit; font-size: 0.9rem; text-decoration: underline; cursor: pointer; padding: 0; }
   .btn[aria-busy="true"] { opacity: .7; pointer-events: none; }
+  .dl-count { color: var(--gold-soft); font-weight: 600; margin-top: 8px; }
   .note { color: var(--ink-soft); font-size: 0.9rem; margin-top: 12px; }
 
   .stage { position: relative; aspect-ratio: 1 / 1; max-width: 100%; }
@@ -211,6 +212,7 @@
           </a>
           <a class="btn btn-ghost" href="#features">تعرّف على الميزات</a>
         </div>
+        <p class="dl-count" aria-live="polite" hidden></p>
         <p class="note">ملف APK لأندرويد، يعمل على أي هاتف. آخر إصدار دائماً<span class="dl-meta"></span>.</p>
       </div>
       <div class="stage" id="stage">
@@ -320,6 +322,7 @@
       <div class="cta">
         <a class="btn btn-gold dl" href="download/manhaj-hayah.apk" download>تحميل التطبيق</a>
       </div>
+      <p class="dl-count" aria-live="polite" hidden></p>
     </div>
   </main>
 
@@ -486,6 +489,34 @@
   }
 
   if (!hosted) return;
+
+  // How many times the app was downloaded from this site. GitHub counts
+  // each fetch of a tiny file (see the workflow); a visitor's finished
+  // download fetches it once, at most once a day per browser.
+  var REPO = 'AlaaBashirSaijary/manhaj-hayah';
+  var COUNT_API = 'https://api.github.com/repos/' + REPO + '/releases/tags/counter';
+  var COUNT_PING = 'https://github.com/' + REPO + '/releases/download/counter/download.txt';
+  var count = null;
+  function showCount() {
+    if (count === null || count < 1) return;
+    document.querySelectorAll('.dl-count').forEach(function (el) {
+      el.textContent = 'حُمِّل التطبيق ' + nf0.format(count) + ' مرة';
+      el.hidden = false;
+    });
+  }
+  fetch(COUNT_API).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    var a = j && (j.assets || []).filter(function (x) { return x.name === 'download.txt'; })[0];
+    if (a) { count = a.download_count; showCount(); }
+  }).catch(function () {});
+  function countDownload() {
+    try {
+      var last = +localStorage.getItem('mh-counted') || 0;
+      if (Date.now() - last < 864e5) return;
+      localStorage.setItem('mh-counted', Date.now());
+    } catch (e) {}
+    fetch(COUNT_PING, { mode: 'no-cors', cache: 'no-store' }).catch(function () {});
+    if (count !== null) { count++; showCount(); }
+  }
 
   // Which build this device needs. Unknown → the universal one, which
   // installs everywhere.
@@ -656,6 +687,7 @@
       a.href = url; a.download = NAME;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      countDownload();
       var secs = (performance.now() - t0) / 1000;
       box.classList.remove('indeterminate');
       fill.style.width = '100%';
@@ -677,6 +709,7 @@
       ctrl.abort();
       // Let the browser download the file the ordinary way.
       box.hidden = true;
+      countDownload();
       location.href = btn.href;
     });
   }

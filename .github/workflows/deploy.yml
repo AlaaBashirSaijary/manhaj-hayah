@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -58,7 +58,7 @@ jobs:
         if: steps.ver.outputs.skip != 'true'
         run: |
           mkdir -p _site/download
-          cp -r index.html privacy.html icon.png screenshots _site/
+          cp -r index.html privacy.html icon.png screenshots video _site/
           cd _site/download
           gh release download "${{ steps.ver.outputs.tag }}" --repo "$SOURCE_REPO" --pattern '*.apk'
           # Releases made before the rename carry the former file names.
@@ -78,6 +78,20 @@ jobs:
           json.dump(info, open('latest.json', 'w'))
           print(info)
           PY
+
+      # The download counter: the site asks GitHub how many times this tiny
+      # file was fetched, and fetches it once when a visitor finishes a
+      # download. The release is made once and then left alone.
+      - name: Make sure the counter exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view counter --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo counter > download.txt
+            gh release create counter download.txt --repo "$GITHUB_REPOSITORY" \
+              --title "Download counter" \
+              --notes "Counts app downloads from the website. Do not delete: the number on the site is this file's download count."
+          fi
 
       - uses: actions/configure-pages@v5
         if: steps.ver.outputs.skip != 'true'
