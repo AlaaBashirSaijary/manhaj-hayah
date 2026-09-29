@@ -67,13 +67,14 @@ jobs:
           done
           # The site hands each phone the build for its processor.
           python3 - "${{ steps.ver.outputs.tag }}" <<'PY'
-          import json, os, sys
+          import hashlib, json, os, sys
           files = {}
           for key, name in [('universal', 'manhaj-hayah.apk'),
                             ('arm64-v8a', 'manhaj-hayah-arm64-v8a.apk'),
                             ('armeabi-v7a', 'manhaj-hayah-armeabi-v7a.apk')]:
               if os.path.exists(name):
-                  files[key] = {'file': name, 'size': os.path.getsize(name)}
+                  files[key] = {'file': name, 'size': os.path.getsize(name),
+                                'sha256': hashlib.sha256(open(name, 'rb').read()).hexdigest()}
           info = {'version': sys.argv[1], 'size': files['universal']['size'], 'files': files}
           json.dump(info, open('latest.json', 'w'))
           print(info)

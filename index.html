@@ -102,6 +102,8 @@
   .dl-info, .dl-eta { color: var(--ink-soft); font-size: 0.95rem; }
   .dl-cancel { background: none; border: 0; color: var(--gold-soft); font: inherit; font-size: 0.9rem; text-decoration: underline; cursor: pointer; padding: 0; }
   .btn[aria-busy="true"] { opacity: .7; pointer-events: none; }
+  .verify code { display: block; direction: ltr; text-align: left; overflow-wrap: anywhere; font-size: 0.85rem; color: var(--gold-soft); background: rgba(13, 51, 37, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .verify { margin-top: 24px; }
   .dl-count { color: var(--gold-soft); font-weight: 600; margin-top: 8px; }
   .note { color: var(--ink-soft); font-size: 0.9rem; margin-top: 12px; }
 
@@ -299,12 +301,18 @@
 
     <section id="install">
       <h2>التثبيت على هاتفك</h2>
-      <p class="section-lede">التطبيق متاح الآن ملفاً للتثبيت المباشر على أندرويد، وقريباً على متجر Google Play.</p>
+      <p class="section-lede">التطبيق متاح الآن ملفاً للتثبيت المباشر على أندرويد، وهو مجاني ودون إعلانات أو تتبّع.</p>
       <ol class="steps">
         <li><h3>حمّل الملف</h3><p>اضغط «تحميل التطبيق» من هاتفك، فيُحمَّل ملف <bdi>manhaj-hayah.apk</bdi>.</p></li>
         <li><h3>اسمح بالتثبيت</h3><p>عند فتح الملف قد يطلب الهاتف السماح بتثبيت التطبيقات من هذا المصدر؛ وافق مرة واحدة.</p></li>
         <li><h3>افتح التطبيق</h3><p>اختر مدينتك لمواقيت الصلاة، وابدأ القراءة. التحديثات القادمة تُثبَّت فوق النسخة الحالية مع بياناتك.</p></li>
       </ol>
+      <details class="verify" hidden>
+        <summary>تحقّق من سلامة الملف قبل التثبيت</summary>
+        <p>بصمة الملف <bdi class="sha-name"></bdi> (SHA-256):</p>
+        <p><code class="sha"></code></p>
+        <p>إن حسبتَ بصمة الملف الذي حمّلته بأي تطبيق لحساب البصمات وطابقت هذه، فالملف هو نفسه الذي نشره الموقع دون تعديل.</p>
+      </details>
     </section>
 
     <section id="faq">
@@ -536,10 +544,15 @@
     var files = info.files || {};
     var f = files[want] || files.universal ||
       (info.size ? { file: NAME, size: info.size } : null);
-    return f ? { version: info.version, file: f.file, size: f.size, small: want !== 'universal' && !!files[want] } : null;
+    return f ? { version: info.version, file: f.file, size: f.size, sha: f.sha256, small: want !== 'universal' && !!files[want] } : null;
   });
   pick.then(function (p) {
     if (!p) return;
+    if (p.sha) {
+      document.querySelectorAll('.sha').forEach(function (el) { el.textContent = p.sha; });
+      document.querySelectorAll('.sha-name').forEach(function (el) { el.textContent = p.file; });
+      document.querySelectorAll('.verify').forEach(function (el) { el.hidden = false; });
+    }
     document.querySelectorAll('.dl-meta').forEach(function (el) {
       el.textContent = ' · الإصدار ' + p.version + ' · الحجم ' + mb(p.size) + ' م.ب' +
         (p.small ? ' (نسخة مخصّصة لمعالج هاتفك)' : '');
