@@ -58,9 +58,9 @@ jobs:
         if: steps.ver.outputs.skip != 'true'
         run: |
           mkdir -p _site/download
-          cp -r index.html privacy.html icon.png og-image.jpg sitemap.xml screenshots video _site/
-          # Search-engine ownership files (Google Search Console, Bing), if any
-          cp google*.html BingSiteAuth.xml _site/ 2>/dev/null || true
+          # Everything in the repo except tooling and repository files
+          rsync -a --exclude='.git' --exclude='.github' --exclude='tools' --exclude='_site' \
+            --exclude='README.md' --exclude='LICENSE' --exclude='download.txt' ./ _site/
           cd _site/download
           gh release download "${{ steps.ver.outputs.tag }}" --repo "$SOURCE_REPO" --pattern '*.apk'
           # Releases made before the rename carry the former file names.

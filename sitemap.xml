@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://alaabashirsaijary.github.io/manhaj-hayah/</loc>
     <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alaabashirsaijary.github.io/manhaj-hayah/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alaabashirsaijary.github.io/manhaj-hayah/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alaabashirsaijary.github.io/manhaj-hayah/"/>
     <video:video>
       <video:thumbnail_loc>https://alaabashirsaijary.github.io/manhaj-hayah/video/poster.jpg</video:thumbnail_loc>
       <video:title>منهج حياة: جولة في ميزات التطبيق</video:title>
@@ -14,6 +17,63 @@
       <video:publication_date>2026-09-28</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/en/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alaabashirsaijary.github.io/manhaj-hayah/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alaabashirsaijary.github.io/manhaj-hayah/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alaabashirsaijary.github.io/manhaj-hayah/"/>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/quran/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/prayer-times/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/azkar/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/tasbeeh/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/hadith/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/wird-khatma/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/ramadan/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alaabashirsaijary.github.io/manhaj-hayah/install/</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://alaabashirsaijary.github.io/manhaj-hayah/privacy.html</loc>
