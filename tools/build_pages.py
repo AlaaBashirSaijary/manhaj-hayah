@@ -17,8 +17,9 @@ DATE = '2026-09-29'
 DATE_AR = '29 سبتمبر 2026'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OG = BASE + 'og-image.jpg'
-PERSON = {'@type': 'Person', 'name': 'ألاء بشير سيجري', 'alternateName': 'Alaa Bashir Saijary', 'url': BASE}
+PERSON = {'@type': 'Person', 'name': 'ألاء بشير سيجري', 'alternateName': 'Alaa Bashir Saijary', 'url': BASE, 'email': 'alaabashersaijary@gmail.com'}
 DL = 'download/manhaj-hayah.apk'
+EMAIL = 'alaabashersaijary@gmail.com'
 
 esc = html.escape
 
@@ -546,10 +547,12 @@ def footer(lang='ar'):
         return ('<footer><nav aria-label="روابط الموقع"><a href="../">الرئيسية</a>' + links +
                 '<a href="../en/" hreflang="en" lang="en">English</a><a href="../privacy.html">سياسة الخصوصية</a></nav>'
                 '<span>من تصميم وتطوير <strong class="author">المهندسة ألاء بشير سيجري</strong></span>'
+                '<span>للملاحظات والدعم: <a href="mailto:' + EMAIL + '">' + EMAIL + '</a></span>'
                 '<span>© 2026 ألاء بشير سيجري. جميع الحقوق محفوظة.</span></footer>')
     return ('<footer><nav aria-label="Links"><a href="../en/">Home</a><a href="../">العربية</a>'
             '<a href="../privacy.html">Privacy policy</a></nav><span>Designed and developed by '
             '<strong class="author">Eng. Alaa Bashir Saijary</strong></span>'
+            '<span>Feedback and support: <a href="mailto:' + EMAIL + '">' + EMAIL + '</a></span>'
             '<span>© 2026 Alaa Bashir Saijary. All rights reserved.</span></footer>')
 
 
