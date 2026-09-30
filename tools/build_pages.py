@@ -20,6 +20,8 @@ OG = BASE + 'og-image.jpg'
 PERSON = {'@type': 'Person', 'name': 'ألاء بشير سيجري', 'alternateName': 'Alaa Bashir Saijary', 'url': BASE, 'email': 'alaabashersaijary@gmail.com'}
 DL = 'download/manhaj-hayah.apk'
 EMAIL = 'alaabashersaijary@gmail.com'
+TELEGRAM = 'https://t.me/+xMPal7qF5NgwZmJk'
+TG_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.5L11.5 20 14 15l5 3z"/><path d="m9 13.5 10-8"/></svg>'
 
 esc = html.escape
 
@@ -417,6 +419,7 @@ PAGES = [
             ]),
             ('التحديث', [
                 ('p', 'حمّل الإصدار الأحدث من هذا الموقع وثبّته فوق النسخة الحالية فتبقى بياناتك كما هي. هذا يعمل من الإصدار 1.0.80 فما بعد.'),
+                ('p', 'يُعلَن كل إصدار جديد في <a href="' + TELEGRAM + '" target="_blank" rel="noopener">قناتنا على تيليغرام</a>، فتنضم إليها لتصلك الإشعارات بالتحديثات.'),
                 ('p', 'إن ظهر لك «لم يتم تثبيت التطبيق» أو رسالة تعارض، فالسبب غالباً أن عندك نسخة تجريبية أقدم بتوقيع مختلف. احفظ نسخة احتياطية من الإعدادات (الإعدادات ← حفظ نسخة احتياطية)، ثم احذف النسخة القديمة وثبّت الجديدة، ثم استعد نسختك الاحتياطية.'),
             ]),
         ],
@@ -526,7 +529,7 @@ def render_blocks(blocks):
 def cta_block(final=False):
     label = 'تحميل التطبيق'
     btn = f'<a class="btn btn-gold dl" href="../{DL}" download>{DL_ICON}{label}</a>'
-    return (f'<div class="cta">{btn}<a class="btn btn-ghost" href="../#features">كل الميزات</a></div>'
+    return (f'<div class="cta">{btn}<a class="btn btn-ghost" href="{TELEGRAM}" target="_blank" rel="noopener">{TG_ICON}قناتنا على تيليغرام</a></div>'
             '<p class="dl-count" aria-live="polite" hidden></p>')
 
 
@@ -545,12 +548,12 @@ def footer(lang='ar'):
     if lang == 'ar':
         links = ''.join(f'<a href="../{s}/">{TITLES_SHORT[s][0]}</a>' for s in TITLES_SHORT)
         return ('<footer><nav aria-label="روابط الموقع"><a href="../">الرئيسية</a>' + links +
-                '<a href="../en/" hreflang="en" lang="en">English</a><a href="../privacy.html">سياسة الخصوصية</a></nav>'
+                '<a href="../en/" hreflang="en" lang="en">English</a><a href="' + TELEGRAM + '" target="_blank" rel="noopener">قناة تيليغرام</a><a href="../privacy.html">سياسة الخصوصية</a></nav>'
                 '<span>من تصميم وتطوير <strong class="author">المهندسة ألاء بشير سيجري</strong></span>'
                 '<span>للملاحظات والدعم: <a href="mailto:' + EMAIL + '">' + EMAIL + '</a></span>'
                 '<span>© 2026 ألاء بشير سيجري. جميع الحقوق محفوظة.</span></footer>')
     return ('<footer><nav aria-label="Links"><a href="../en/">Home</a><a href="../">العربية</a>'
-            '<a href="../privacy.html">Privacy policy</a></nav><span>Designed and developed by '
+            '<a href="' + TELEGRAM + '" target="_blank" rel="noopener">Telegram channel</a><a href="../privacy.html">Privacy policy</a></nav><span>Designed and developed by '
             '<strong class="author">Eng. Alaa Bashir Saijary</strong></span>'
             '<span>Feedback and support: <a href="mailto:' + EMAIL + '">' + EMAIL + '</a></span>'
             '<span>© 2026 Alaa Bashir Saijary. All rights reserved.</span></footer>')
@@ -656,8 +659,8 @@ def build_en():
                '<p>Updates install over your current version and keep your data (from version 1.0.80).</p></section>')
     faq = '<section id="faq"><h2>Frequently asked questions</h2>' + ''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in EN_FAQ) + '</section>'
     cta = (f'<div class="cta"><a class="btn btn-gold dl" href="../{DL}" download>{DL_ICON}Download the app</a>'
-           '<a class="btn btn-ghost" href="../">العربية</a></div><p class="dl-count" aria-live="polite" hidden></p>')
-    cta2 = cta.replace('<a class="btn btn-ghost" href="../">العربية</a>', '')
+           '<a class="btn btn-ghost" href="' + TELEGRAM + '" target="_blank" rel="noopener">' + TG_ICON + 'Telegram channel</a></div><p class="dl-count" aria-live="polite" hidden></p>')
+    cta2 = cta
     hero = (f'<main><div class="hero"><div><h1>{esc(p["h1"])}</h1><p class="lede">{esc(p["lede"])}</p>{cta}'
             '<p class="note">Android 7.0+ APK · free · no ads <span class="dl-meta"></span></p>'
             '<p class="byline">Designed and developed by Eng. Alaa Bashir Saijary</p></div>'
