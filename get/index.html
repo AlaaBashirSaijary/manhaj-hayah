@@ -50,6 +50,9 @@
   .steps b { color: var(--parchment); font-weight: 600; }
   .note { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(201,165,76,.5); background: rgba(201,165,76,.1); font-size: .95rem; color: var(--parchment); font-weight: 400; }
 
+  .vid { margin: 10px auto 0; max-width: 100%; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+  .vid.tall { width: min(300px, 80vw); }
+  .vid video { display: block; width: 100%; height: auto; }
   .phone { display: block; margin: 8px auto 0; width: min(230px, 62vw); border-radius: 26px; border: 3px solid #1e2b24; outline: 2px solid var(--line); box-shadow: 0 26px 60px rgba(0,0,0,.55); }
 
   .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -90,6 +93,12 @@
         <li>إن عرضت Google Play Protect تنبيهاً فاختر <b>«مزيد من التفاصيل»</b> ثم <b>«التثبيت على أي حال»</b>.</li>
       </ol>
       <p class="note">فتحت الرابط من إنستغرام أو فيسبوك؟ اضغط ⋮ أو ⋯ أعلى الشاشة ثم «فتح في المتصفح»، أو انسخ الرابط والصقه في Chrome.</p>
+    </section>
+
+    <section>
+      <h2>شاهد الشرح في فيديو</h2>
+      <div class="vid tall"><video controls playsinline preload="none" poster="../video/install-guide-reel-poster.jpg" aria-label="فيديو شرح تثبيت تطبيق منهج حياة"><source src="../video/install-guide-reel.mp4" type="video/mp4"></video></div>
+      <p class="note">الشاشات في الفيديو رسوم تقريبية وقد يختلف شكلها حسب هاتفك.</p>
     </section>
 
     <section>

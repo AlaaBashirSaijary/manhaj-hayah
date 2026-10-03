@@ -574,6 +574,10 @@ def build_page(p):
     for sec in p['sections']:
         title, blocks = sec
         body.append(f'<section><h2>{esc(title)}</h2>{render_blocks(blocks)}</section>')
+        if p['slug'] == 'install' and title == 'خطوات التثبيت':
+            body.append('<section><h2>شاهد الخطوات في فيديو</h2><p>فيديو قصير (دقيقة واحدة) يوضّح التثبيت. الشاشات فيه رسوم تقريبية وقد يختلف شكلها قليلاً حسب هاتفك.</p>'
+                        '<div class="vid"><video controls playsinline preload="none" poster="../video/install-guide-poster.jpg" aria-label="فيديو شرح تثبيت تطبيق منهج حياة على أندرويد">'
+                        '<source src="../video/install-guide.mp4" type="video/mp4"></video></div></section>')
     faq_html = ''.join(f'<details><summary>{esc(q)}</summary><p>{a}</p></details>' for q, a in p['faq'])
     body.append(f'<section><h2>أسئلة شائعة</h2>{faq_html}</section>')
     rel = ''.join(f'<a href="../{s}/"><b>{TITLES_SHORT[s][0]}</b><span>{TITLES_SHORT[s][1]}</span></a>' for s in p['related'])

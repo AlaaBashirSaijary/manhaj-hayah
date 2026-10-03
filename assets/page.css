@@ -119,3 +119,6 @@ footer .author { color: var(--gold-soft); font-weight: 600; }
   html { scroll-behavior: auto; }
   .btn { transition: none; }
 }
+
+.vid { margin-top: 12px; max-width: 760px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+.vid video { display: block; width: 100%; height: auto; }
