@@ -706,69 +706,12 @@ bdi{display:block;overflow-wrap:anywhere;word-break:break-all;font-size:.8rem}th
 
 
 def build_get():
-    html_doc = f"""<!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>تحميل منهج حياة لأندرويد</title>
-<meta name="description" content="حمّل منهج حياة مجاناً لأندرويد: القرآن والصلاة والأذكار في تطبيق واحد.">
-<meta name="robots" content="noindex, follow"><link rel="canonical" href="{BASE}">
-<meta name="theme-color" content="#071e15"><link rel="icon" href="../icon.png">
-<style>{COMMON_CSS}</style></head><body><div class="wrap">
-<header><img src="../icon.png" alt="" width="44" height="44"><b>منهج حياة</b></header>
-<main>
-<h1>حمّل «منهج حياة» مجاناً</h1>
-<p>القرآن والصلاة والأذكار في تطبيق واحد. لأندرويد، دون إعلانات ودون حساب.</p>
-<div class="row"><a id="dl" class="btn gold" href="../{DL}" download>{DL_ICON}تحميل التطبيق <span id="meta" class="small"></span></a></div>
-<ol>
-<li>اضغط «تحميل التطبيق». إن ظهر تحذير من Chrome بأن الملف قد يضر بجهازك فاختر <strong>«تنزيل على أي حال»</strong>؛ هذا تحذير عام يظهر مع كل ملفات التثبيت.</li>
-<li>افتح الملف من إشعار التنزيل أو من مجلد «التنزيلات»، ووافق على السماح بالتثبيت من هذا المصدر مرة واحدة.</li>
-<li>إن عرضت Google Play Protect تنبيهاً فاختر «مزيد من التفاصيل» ثم «التثبيت على أي حال».</li>
-</ol>
-<div class="row">
-<a class="btn ghost" href="{TELEGRAM}" target="_blank" rel="noopener">قناتنا على تيليغرام</a>
-<button id="copy" class="btn ghost" type="button">نسخ رابط الصفحة</button>
-<a id="wa" class="btn ghost" href="#" target="_blank" rel="noopener">إرسال لصديق</a>
-</div>
-<p class="small">لم يعمل التنزيل؟ جرّب <a href="../install/">دليل التثبيت المفصّل</a> أو راسلنا: <a href="mailto:{EMAIL}">{EMAIL}</a></p>
-<p class="small" id="sha" hidden>بصمة الملف (SHA-256): <bdi dir="ltr" id="shav"></bdi></p>
-</main></div>
-<script src="../assets/track.js" defer></script>
-<script defer>
-window.addEventListener('DOMContentLoaded', function () {{
-  var MH = window.MH || {{ env: {{}}, click: function () {{}}, banner: function () {{}}, copy: function (t, d) {{ d(); }}, shareText: '' }};
-  var dl = document.getElementById('dl');
-  // The right file for this phone, when the site knows it.
-  fetch('../download/latest.json', {{ cache: 'no-store' }}).then(function (r) {{ return r.ok ? r.json() : null; }}).then(function (info) {{
-    if (!info) return;
-    var want = Promise.resolve('universal');
-    if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {{
-      want = navigator.userAgentData.getHighEntropyValues(['architecture', 'bitness']).then(function (h) {{
-        if (/arm/i.test(h.architecture) && h.bitness === '64') return 'arm64-v8a';
-        if (/arm/i.test(h.architecture) && h.bitness === '32') return 'armeabi-v7a';
-        return 'universal';
-      }}).catch(function () {{ return 'universal'; }});
-    }}
-    want.then(function (k) {{
-      var f = (info.files || {{}})[k] || (info.files || {{}}).universal;
-      if (!f) return;
-      dl.href = '../download/' + f.file;
-      document.getElementById('meta').textContent = '(' + (f.size / 1048576).toFixed(0) + ' م.ب)';
-      if (f.sha256) {{ document.getElementById('sha').hidden = false; document.getElementById('shav').textContent = f.sha256; }}
-    }});
-  }}).catch(function () {{}});
-  dl.addEventListener('click', function (e) {{
-    MH.click();
-    if (MH.env.ios || MH.env.iab) {{ e.preventDefault(); MH.banner(MH.env.ios ? 'ios' : 'iab', true); }}
-  }});
-  document.getElementById('copy').onclick = function () {{
-    var b = this; MH.copy(location.origin + location.pathname, function () {{ b.textContent = 'تم النسخ ✓'; }});
-  }};
-  document.getElementById('wa').href = 'https://wa.me/?text=' + encodeURIComponent(MH.shareText || '');
-}});
-</script></body></html>
-"""
+    t = open(os.path.join(ROOT, 'tools', 'get_template.html')).read()
+    for k, v in {'@@BASE@@': BASE, '@@DL@@': DL, '@@ICON@@': DL_ICON, '@@TG@@': TELEGRAM, '@@EMAIL@@': EMAIL}.items():
+        t = t.replace(k, v)
     os.makedirs(os.path.join(ROOT, 'get'), exist_ok=True)
-    open(os.path.join(ROOT, 'get', 'index.html'), 'w').write(html_doc)
+    open(os.path.join(ROOT, 'get', 'index.html'), 'w').write(t)
+
 
 
 STAT_ROWS = [
