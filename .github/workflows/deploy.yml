@@ -89,11 +89,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          assets="download.txt click.txt iab.txt ios.txt visit-ig.txt visit-fb.txt visit-li.txt visit-tg.txt visit-other.txt"
+          for f in $assets; do echo counter > "$f"; done
           if ! gh release view counter --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo counter > download.txt
-            gh release create counter download.txt --repo "$GITHUB_REPOSITORY" \
+            gh release create counter $assets --repo "$GITHUB_REPOSITORY" \
               --title "Download counter" \
-              --notes "Counts app downloads from the website. Do not delete: the number on the site is this file's download count."
+              --notes "Counts visits and downloads from the website. Do not delete: the numbers on /stats/ are these files' download counts."
+          else
+            have=$(gh release view counter --repo "$GITHUB_REPOSITORY" --json assets -q '.assets[].name')
+            for f in $assets; do
+              echo "$have" | grep -qx "$f" || gh release upload counter "$f" --repo "$GITHUB_REPOSITORY"
+            done
           fi
 
       - uses: actions/configure-pages@v5

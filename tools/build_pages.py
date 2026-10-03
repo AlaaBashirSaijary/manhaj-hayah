@@ -583,7 +583,7 @@ def build_page(p):
     doc = (head(p, url, 'ar') + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">\n'
            '<link rel="stylesheet" href="../assets/page.css">\n'
            '<script type="application/ld+json">\n' + jsonld(p, url, 'ar', crumbs, p['faq']) + '\n</script>\n</head>\n<body>\n<div class="wrap">\n'
-           + header('ar', p['slug']) + '\n' + '\n'.join(body) + '\n' + footer('ar') + '\n</div>\n<script src="../assets/download.js" defer></script>\n</body>\n</html>\n')
+           + header('ar', p['slug']) + '\n' + '\n'.join(body) + '\n' + footer('ar') + '\n</div>\n<script src="../assets/track.js" defer></script>\n<script src="../assets/download.js" defer></script>\n</body>\n</html>\n')
     d = os.path.join(ROOT, p['slug'])
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, 'index.html'), 'w').write(doc)
@@ -675,7 +675,7 @@ def build_en():
     doc = (head(p, url, 'en', alt) + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">\n'
            '<link rel="stylesheet" href="../assets/page.css">\n<script type="application/ld+json">\n'
            + json.dumps(ld, ensure_ascii=False, indent=1) + '\n</script>\n</head>\n<body>\n<div class="wrap">\n' + header('en') + '\n' + hero + shots + feats
-           + install + faq + final + '\n' + footer('en') + '\n</div>\n<script src="../assets/download.js" defer></script>\n</body>\n</html>\n')
+           + install + faq + final + '\n' + footer('en') + '\n</div>\n<script src="../assets/track.js" defer></script>\n<script src="../assets/download.js" defer></script>\n</body>\n</html>\n')
     os.makedirs(os.path.join(ROOT, 'en'), exist_ok=True)
     open(os.path.join(ROOT, 'en', 'index.html'), 'w').write(doc)
 
@@ -690,6 +690,130 @@ h1{color:#e0c27a;margin:0 0 8px}a{color:#e0c27a}nav{display:flex;flex-wrap:wrap;
 <nav><a href="/manhaj-hayah/">الصفحة الرئيسية</a><a href="/manhaj-hayah/quran/">القرآن</a><a href="/manhaj-hayah/prayer-times/">مواقيت الصلاة</a><a href="/manhaj-hayah/azkar/">الأذكار</a><a href="/manhaj-hayah/install/">التثبيت</a></nav></main></body></html>
 '''
     open(os.path.join(ROOT, '404.html'), 'w').write(doc)
+
+
+COMMON_CSS = """
+*{box-sizing:border-box}body{margin:0;background:#071e15;color:#f3ecd8;font:18px/1.9 "IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;padding-inline:16px}
+.wrap{max-width:640px;margin-inline:auto;padding-block:18px 40px}a{color:#e0c27a}
+header{display:flex;align-items:center;gap:10px;margin-bottom:8px}header img{width:44px;height:44px;border-radius:11px}header b{font-size:1.4rem}
+h1{color:#e0c27a;font-size:1.9rem;line-height:1.4;margin:10px 0 6px}p{color:#c5d3ca;margin:0 0 12px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:inherit;font-weight:600;padding:14px 26px;border-radius:14px;border:1px solid #c9a54c;cursor:pointer}
+.gold{background:linear-gradient(180deg,#e0c27a,#c9a54c);color:#1c1606}.ghost{background:none;color:#f3ecd8}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.row .gold{flex:1 1 100%;justify-content:center;text-align:center}ol{padding-inline-start:1.3em;color:#c5d3ca}li{margin:8px 0}
+.small{font-size:.9rem;color:#c5d3ca}table{width:100%;border-collapse:collapse;margin:8px 0 20px}td,th{padding:8px 10px;border-bottom:1px solid rgba(201,165,76,.28);text-align:start}
+bdi{display:block;overflow-wrap:anywhere;word-break:break-all;font-size:.8rem}th{color:#e0c27a}td.n{font-variant-numeric:tabular-nums;font-weight:700;text-align:end}
+"""
+
+
+def build_get():
+    html_doc = f"""<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تحميل منهج حياة لأندرويد</title>
+<meta name="description" content="حمّل منهج حياة مجاناً لأندرويد: القرآن والصلاة والأذكار في تطبيق واحد.">
+<meta name="robots" content="noindex, follow"><link rel="canonical" href="{BASE}">
+<meta name="theme-color" content="#071e15"><link rel="icon" href="../icon.png">
+<style>{COMMON_CSS}</style></head><body><div class="wrap">
+<header><img src="../icon.png" alt="" width="44" height="44"><b>منهج حياة</b></header>
+<main>
+<h1>حمّل «منهج حياة» مجاناً</h1>
+<p>القرآن والصلاة والأذكار في تطبيق واحد. لأندرويد، دون إعلانات ودون حساب.</p>
+<div class="row"><a id="dl" class="btn gold" href="../{DL}" download>{DL_ICON}تحميل التطبيق <span id="meta" class="small"></span></a></div>
+<ol>
+<li>اضغط «تحميل التطبيق». إن ظهر تحذير من Chrome بأن الملف قد يضر بجهازك فاختر <strong>«تنزيل على أي حال»</strong>؛ هذا تحذير عام يظهر مع كل ملفات التثبيت.</li>
+<li>افتح الملف من إشعار التنزيل أو من مجلد «التنزيلات»، ووافق على السماح بالتثبيت من هذا المصدر مرة واحدة.</li>
+<li>إن عرضت Google Play Protect تنبيهاً فاختر «مزيد من التفاصيل» ثم «التثبيت على أي حال».</li>
+</ol>
+<div class="row">
+<a class="btn ghost" href="{TELEGRAM}" target="_blank" rel="noopener">قناتنا على تيليغرام</a>
+<button id="copy" class="btn ghost" type="button">نسخ رابط الصفحة</button>
+<a id="wa" class="btn ghost" href="#" target="_blank" rel="noopener">إرسال لصديق</a>
+</div>
+<p class="small">لم يعمل التنزيل؟ جرّب <a href="../install/">دليل التثبيت المفصّل</a> أو راسلنا: <a href="mailto:{EMAIL}">{EMAIL}</a></p>
+<p class="small" id="sha" hidden>بصمة الملف (SHA-256): <bdi dir="ltr" id="shav"></bdi></p>
+</main></div>
+<script src="../assets/track.js" defer></script>
+<script defer>
+window.addEventListener('DOMContentLoaded', function () {{
+  var MH = window.MH || {{ env: {{}}, click: function () {{}}, banner: function () {{}}, copy: function (t, d) {{ d(); }}, shareText: '' }};
+  var dl = document.getElementById('dl');
+  // The right file for this phone, when the site knows it.
+  fetch('../download/latest.json', {{ cache: 'no-store' }}).then(function (r) {{ return r.ok ? r.json() : null; }}).then(function (info) {{
+    if (!info) return;
+    var want = Promise.resolve('universal');
+    if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {{
+      want = navigator.userAgentData.getHighEntropyValues(['architecture', 'bitness']).then(function (h) {{
+        if (/arm/i.test(h.architecture) && h.bitness === '64') return 'arm64-v8a';
+        if (/arm/i.test(h.architecture) && h.bitness === '32') return 'armeabi-v7a';
+        return 'universal';
+      }}).catch(function () {{ return 'universal'; }});
+    }}
+    want.then(function (k) {{
+      var f = (info.files || {{}})[k] || (info.files || {{}}).universal;
+      if (!f) return;
+      dl.href = '../download/' + f.file;
+      document.getElementById('meta').textContent = '(' + (f.size / 1048576).toFixed(0) + ' م.ب)';
+      if (f.sha256) {{ document.getElementById('sha').hidden = false; document.getElementById('shav').textContent = f.sha256; }}
+    }});
+  }}).catch(function () {{}});
+  dl.addEventListener('click', function (e) {{
+    MH.click();
+    if (MH.env.ios || MH.env.iab) {{ e.preventDefault(); MH.banner(MH.env.ios ? 'ios' : 'iab', true); }}
+  }});
+  document.getElementById('copy').onclick = function () {{
+    var b = this; MH.copy(location.origin + location.pathname, function () {{ b.textContent = 'تم النسخ ✓'; }});
+  }};
+  document.getElementById('wa').href = 'https://wa.me/?text=' + encodeURIComponent(MH.shareText || '');
+}});
+</script></body></html>
+"""
+    os.makedirs(os.path.join(ROOT, 'get'), exist_ok=True)
+    open(os.path.join(ROOT, 'get', 'index.html'), 'w').write(html_doc)
+
+
+STAT_ROWS = [
+    ('visit-ig', 'زيارات من إنستغرام'), ('visit-fb', 'زيارات من فيسبوك'), ('visit-li', 'زيارات من لينكد إن'),
+    ('visit-tg', 'زيارات من تيليغرام'), ('visit-other', 'زيارات من مصادر أخرى (بحث، رابط مباشر)'),
+]
+
+
+def build_stats():
+    rows = ''.join(f'<tr><td>{label}</td><td class="n" data-k="{k}">…</td></tr>' for k, label in STAT_ROWS)
+    html_doc = f"""<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إحصاءات الموقع</title><meta name="robots" content="noindex, nofollow"><link rel="icon" href="../icon.png">
+<style>{COMMON_CSS}</style></head><body><div class="wrap">
+<header><img src="../icon.png" alt="" width="44" height="44"><b>إحصاءات منهج حياة</b></header>
+<p class="small">أرقام تقريبية تُحدَّث بعد نحو عشر دقائق من الحدث. يُحسب الزائر مرة واحدة في كل جلسة تصفح، ولا تُخزَّن أي بيانات شخصية.</p>
+<table><tr><th colspan="2">الزيارات</th></tr>{rows}
+<tr><td><strong>مجموع الزيارات</strong></td><td class="n" id="visits">…</td></tr></table>
+<table><tr><th colspan="2">ماذا فعل الزوار؟</th></tr>
+<tr><td>ضغطوا «تحميل»</td><td class="n" data-k="click">…</td></tr>
+<tr><td>أكملوا التحميل من الصفحة الرئيسية</td><td class="n" data-k="download">…</td></tr>
+<tr><td>زاروا من داخل تطبيق (إنستغرام، فيسبوك…) وقد لا يستطيعون التنزيل</td><td class="n" data-k="iab">…</td></tr>
+<tr><td>زاروا من آيفون (لا يمكنهم التثبيت)</td><td class="n" data-k="ios">…</td></tr></table>
+<table><tr><th colspan="2">النسب</th></tr>
+<tr><td>من ضغط «تحميل» من كل زائر</td><td class="n" id="r1">…</td></tr>
+<tr><td>من زار من داخل تطبيق من كل زائر</td><td class="n" id="r2">…</td></tr>
+<tr><td>من زار من آيفون من كل زائر</td><td class="n" id="r3">…</td></tr></table>
+<p class="small">إن كانت نسبة الزيارة من داخل تطبيق مرتفعة فالمشكلة في المتصفح المدمج، وقد وضعنا تنبيهاً لهم. وإن كان الزوار كثراً ومن ضغطوا قليلاً فالمشكلة في الصفحة أو في وضوح الدعوة للتحميل.</p>
+</div>
+<script>
+fetch('https://api.github.com/repos/AlaaBashirSaijary/manhaj-hayah/releases/tags/counter').then(function (r) {{ return r.json(); }}).then(function (j) {{
+  var c = {{}}; (j.assets || []).forEach(function (a) {{ c[a.name.replace(/\\.txt$/, '')] = a.download_count; }});
+  document.querySelectorAll('[data-k]').forEach(function (el) {{ el.textContent = c[el.dataset.k] == null ? '0' : c[el.dataset.k]; }});
+  var visits = Object.keys(c).filter(function (k) {{ return k.indexOf('visit-') === 0; }}).reduce(function (a, k) {{ return a + c[k]; }}, 0);
+  document.getElementById('visits').textContent = visits;
+  function pct(n) {{ return visits ? Math.round(n / visits * 100) + '٪' : '–'; }}
+  document.getElementById('r1').textContent = pct(c.click || 0);
+  document.getElementById('r2').textContent = pct(c.iab || 0);
+  document.getElementById('r3').textContent = pct(c.ios || 0);
+}}).catch(function () {{ document.querySelectorAll('.n').forEach(function (e) {{ e.textContent = '؟'; }}); }});
+</script></body></html>
+"""
+    os.makedirs(os.path.join(ROOT, 'stats'), exist_ok=True)
+    open(os.path.join(ROOT, 'stats', 'index.html'), 'w').write(html_doc)
 
 
 def build_sitemap():
@@ -727,5 +851,7 @@ if __name__ == '__main__':
         print(f"{p['slug']:14s} words={w:4d} title={t:3d} desc={d:3d}", '' if d <= 170 else '  (long description)')
     build_en()
     build_404()
+    build_get()
+    build_stats()
     build_sitemap()
     print('done')

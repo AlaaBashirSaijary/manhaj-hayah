@@ -86,6 +86,15 @@
   var busy = false;
   document.querySelectorAll('a.dl').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
+      var MH = window.MH;
+      if (MH) MH.click();
+      // iPhones cannot install the app, and apps' built-in browsers cannot
+      // save it: say so instead of pretending to download.
+      if (MH && (MH.env.ios || MH.env.iab)) {
+        e.preventDefault();
+        MH.banner(MH.env.ios ? 'ios' : 'iab', true);
+        return;
+      }
       if (!window.fetch || !window.AbortController) return;
       e.preventDefault();
       if (!busy) start(btn);
@@ -230,7 +239,7 @@
       fill.style.width = '100%';
       pct.textContent = 'اكتمل التحميل ✓';
       info.textContent = mb(blob.size) + ' م.ب' + (secs > 0 ? ' · ' + rate(blob.size / secs) : '');
-      left.textContent = 'افتح الملف من إشعار التنزيل أو من مجلد «التنزيلات» لتثبيته.';
+      left.textContent = 'افتح الملف من إشعار التنزيل أو من مجلد «التنزيلات» لتثبيته. إن ظهر تحذير من المتصفح فاختر «تنزيل على أي حال».';
       cancel.hidden = true;
       finish();
     }).catch(function (err) {
