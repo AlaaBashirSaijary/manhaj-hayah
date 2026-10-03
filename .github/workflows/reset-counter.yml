@@ -16,7 +16,7 @@ jobs:
     steps:
       - run: |
           gh release delete counter --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag || true
-          assets="download.txt click.txt iab.txt ios.txt visit-ig.txt visit-fb.txt visit-li.txt visit-tg.txt visit-other.txt"
+          assets="download.txt click.txt iab.txt ios.txt visit-ig.txt visit-fb.txt visit-li.txt visit-tg.txt visit-app.txt visit-wa.txt visit-other.txt"
           for f in $assets; do echo counter > "$f"; done
           gh release create counter $assets --repo "$GITHUB_REPOSITORY" \
             --title "Download counter" \

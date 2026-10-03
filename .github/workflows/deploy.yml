@@ -89,7 +89,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          assets="download.txt click.txt iab.txt ios.txt visit-ig.txt visit-fb.txt visit-li.txt visit-tg.txt visit-other.txt"
+          assets="download.txt click.txt iab.txt ios.txt visit-ig.txt visit-fb.txt visit-li.txt visit-tg.txt visit-app.txt visit-wa.txt visit-other.txt"
           for f in $assets; do echo counter > "$f"; done
           if ! gh release view counter --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release create counter $assets --repo "$GITHUB_REPOSITORY" \

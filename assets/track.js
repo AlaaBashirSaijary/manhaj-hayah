@@ -18,7 +18,7 @@
     iab: /Instagram|FBAN|FBAV|FB_IAB|FBIOS|Messenger|LinkedInApp|Snapchat|TikTok|musical_ly|Bytedance|Telegram|MicroMessenger|; wv\)/i.test(ua)
   };
 
-  var SOURCES = { ig: 1, fb: 1, li: 1, tg: 1 };
+  var SOURCES = { ig: 1, fb: 1, li: 1, tg: 1, app: 1, wa: 1 };
   var src = 'other';
   try {
     var s = (new URLSearchParams(location.search).get('s') || '').toLowerCase();
@@ -35,7 +35,7 @@
   }
 
   var pageUrl = location.origin + location.pathname;
-  var shareText = 'منهج حياة: تطبيق مجاني للقرآن والصلاة والأذكار دون إعلانات (لأندرويد). ' + ROOT;
+  var shareText = 'منهج حياة: تطبيق مجاني للقرآن والصلاة والأذكار دون إعلانات (لأندرويد). ' + ROOT + 'get/?s=wa';
 
   function copy(text, done) {
     function fallback() {
