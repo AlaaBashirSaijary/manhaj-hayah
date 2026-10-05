@@ -20,6 +20,7 @@ OG = BASE + 'og-image.jpg'
 PERSON = {'@type': 'Person', 'name': 'ألاء بشير سيجري', 'alternateName': 'Alaa Bashir Saijary', 'url': BASE, 'email': 'alaabashersaijary@gmail.com'}
 DL = 'download/manhaj-hayah.apk'
 EMAIL = 'alaabashersaijary@gmail.com'
+UPTODOWN = 'https://io-github-alaabashirsaijary-tareeqaljannah.en.uptodown.com/android'
 TELEGRAM = 'https://t.me/+xMPal7qF5NgwZmJk'
 TG_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.5L11.5 20 14 15l5 3z"/><path d="m9 13.5 10-8"/></svg>'
 
@@ -529,7 +530,7 @@ def render_blocks(blocks):
 def cta_block(final=False):
     label = 'تحميل التطبيق'
     btn = f'<a class="btn btn-gold dl" href="../{DL}" download>{DL_ICON}{label}</a>'
-    return (f'<div class="cta">{btn}<a class="btn btn-ghost" href="{TELEGRAM}" target="_blank" rel="noopener">{TG_ICON}قناتنا على تيليغرام</a></div>'
+    return (f'<div class="cta">{btn}<a class="btn btn-ghost" href="{UPTODOWN}" target="_blank" rel="noopener">متوفر على Uptodown</a><a class="btn btn-ghost" href="{TELEGRAM}" target="_blank" rel="noopener">{TG_ICON}قناتنا على تيليغرام</a></div>'
             '<p class="dl-count" aria-live="polite" hidden></p>')
 
 
@@ -711,7 +712,7 @@ bdi{display:block;overflow-wrap:anywhere;word-break:break-all;font-size:.8rem}th
 
 def build_get():
     t = open(os.path.join(ROOT, 'tools', 'get_template.html')).read()
-    for k, v in {'@@BASE@@': BASE, '@@DL@@': DL, '@@ICON@@': DL_ICON, '@@TG@@': TELEGRAM, '@@EMAIL@@': EMAIL}.items():
+    for k, v in {'@@BASE@@': BASE, '@@DL@@': DL, '@@ICON@@': DL_ICON, '@@TG@@': TELEGRAM, '@@UT@@': UPTODOWN, '@@EMAIL@@': EMAIL}.items():
         t = t.replace(k, v)
     os.makedirs(os.path.join(ROOT, 'get'), exist_ok=True)
     open(os.path.join(ROOT, 'get', 'index.html'), 'w').write(t)
