@@ -73,7 +73,10 @@ jobs:
           files = {}
           for key, name in [('universal', 'manhaj-hayah.apk'),
                             ('arm64-v8a', 'manhaj-hayah-arm64-v8a.apk'),
-                            ('armeabi-v7a', 'manhaj-hayah-armeabi-v7a.apk')]:
+                            ('armeabi-v7a', 'manhaj-hayah-armeabi-v7a.apk'),
+                            ('lite-universal', 'manhaj-hayah-lite.apk'),
+                            ('lite-arm64-v8a', 'manhaj-hayah-lite-arm64-v8a.apk'),
+                            ('lite-armeabi-v7a', 'manhaj-hayah-lite-armeabi-v7a.apk')]:
               if os.path.exists(name):
                   files[key] = {'file': name, 'size': os.path.getsize(name),
                                 'sha256': hashlib.sha256(open(name, 'rb').read()).hexdigest()}

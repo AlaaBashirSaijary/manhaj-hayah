@@ -531,7 +531,8 @@ def cta_block(final=False):
     label = 'تحميل التطبيق'
     btn = f'<a class="btn btn-gold dl" href="../{DL}" download>{DL_ICON}{label}</a>'
     return (f'<div class="cta">{btn}<a class="btn btn-ghost" href="{UPTODOWN}" target="_blank" rel="noopener">متوفر على Uptodown</a><a class="btn btn-ghost" href="{TELEGRAM}" target="_blank" rel="noopener">{TG_ICON}قناتنا على تيليغرام</a></div>'
-            '<p class="dl-count" aria-live="polite" hidden></p>')
+            '<p class="dl-count" aria-live="polite" hidden></p>'
+            '<p class="note dl-full-note" hidden>النسخة الخفيفة تنزّل صفحات المصحف عند فتحها أول مرة (تحتاج إنترنت). تريد المصحف كاملاً دون إنترنت؟ <a class="dl-full" href="#" download>حمّل النسخة الكاملة (<span class="dl-full-size"></span> م.ب)</a></p>')
 
 
 def header(lang='ar', current=None):

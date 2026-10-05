@@ -66,9 +66,15 @@
     var info = v[0], want = v[1];
     if (!info) return null;
     var files = info.files || {};
-    var f = files[want] || files.universal ||
+    // The light build (no mushaf images inside, fetched page by page) is a
+    // third of the size, so it is what the button downloads. The full one
+    // stays one tap away for people who want the mushaf offline at once.
+    var lite = files['lite-' + want] || files['lite-universal'];
+    var full = files[want] || files.universal ||
       (info.size ? { file: NAME, size: info.size } : null);
-    return f ? { version: info.version, file: f.file, size: f.size, sha: f.sha256, small: want !== 'universal' && !!files[want] } : null;
+    var f = lite || full;
+    return f ? { version: info.version, file: f.file, size: f.size, sha: f.sha256,
+      small: want !== 'universal' && !!files[want], lite: !!lite, full: full } : null;
   });
   pick.then(function (p) {
     if (!p) return;
@@ -79,8 +85,17 @@
     }
     document.querySelectorAll('.dl-meta').forEach(function (el) {
       el.textContent = ' · الإصدار ' + p.version + ' · الحجم ' + mb(p.size) + ' م.ب' +
-        (p.small ? ' (نسخة مخصّصة لمعالج هاتفك)' : '');
+        (p.lite ? ' (نسخة خفيفة)' : p.small ? ' (نسخة مخصّصة لمعالج هاتفك)' : '');
     });
+    // Link to the complete build, which carries the whole mushaf offline.
+    if (p.lite && p.full) {
+      document.querySelectorAll('a.dl-full').forEach(function (a) {
+        a.href = ROOT + 'download/' + p.full.file;
+        var s = a.querySelector('.dl-full-size');
+        if (s) s.textContent = mb(p.full.size);
+        a.closest('.dl-full-note').hidden = false;
+      });
+    }
   });
 
   var busy = false;

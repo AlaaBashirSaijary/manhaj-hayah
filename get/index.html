@@ -85,6 +85,7 @@
       <a id="dl" class="btn gold" href="../download/manhaj-hayah.apk" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>تحميل التطبيق</a>
       <a class="alt" href="https://io-github-alaabashirsaijary-tareeqaljannah.en.uptodown.com/android" target="_blank" rel="noopener">أو حمّل من متجر Uptodown</a>
       <p class="meta" id="meta">لأندرويد 7.0 فأحدث</p>
+      <p class="meta" id="fullnote" hidden>النسخة الخفيفة تنزّل صفحات المصحف عند فتحها أول مرة (تحتاج إنترنت). <a id="full" href="#" download>حمّل النسخة الكاملة (<span id="fullsize"></span> م.ب) للقراءة دون إنترنت</a></p>
     </div>
 
     <section>
@@ -149,10 +150,18 @@ window.addEventListener('DOMContentLoaded', function () {
       }).catch(function () { return 'universal'; });
     }
     want.then(function (k) {
-      var f = (info.files || {})[k] || (info.files || {}).universal;
+      var files = info.files || {};
+      var lite = files['lite-' + k] || files['lite-universal'];
+      var full = files[k] || files.universal;
+      var f = lite || full;
       if (!f) return;
       dl.href = '../download/' + f.file;
-      document.getElementById('meta').textContent = 'لأندرويد 7.0 فأحدث · ' + (f.size / 1048576).toFixed(0) + ' ميغابايت · الإصدار ' + info.version;
+      document.getElementById('meta').textContent = 'لأندرويد 7.0 فأحدث · ' + (f.size / 1048576).toFixed(0) + ' ميغابايت' + (lite ? ' (نسخة خفيفة)' : '') + ' · الإصدار ' + info.version;
+      if (lite && full) {
+        document.getElementById('full').href = '../download/' + full.file;
+        document.getElementById('fullsize').textContent = (full.size / 1048576).toFixed(0);
+        document.getElementById('fullnote').hidden = false;
+      }
       if (f.sha256) { document.getElementById('shabox').hidden = false; document.getElementById('shav').textContent = f.sha256; }
     });
   }).catch(function () {});
